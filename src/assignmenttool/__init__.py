@@ -40,7 +40,7 @@ def compileLaTeX(tdir):
 
 ####################################################################################################
 
-def main(args):
+def process(args):
     # Read Scores and comments
     scores = pd.read_excel(args.infile, sheet_name = 'Grading')
 
@@ -135,9 +135,13 @@ def main(args):
 
 ####################################################################################################
 
-args = parser.parse_args()
-try:
-    sys.exit(main(args))
-except RuntimeError as e:
-    print(f'\nERROR: {e}')
-    sys.exit(1)
+def main(argv=sys.argv):
+    args = parser.parse_args()
+    try:
+        sys.exit(main(args))
+    except RuntimeError as e:
+        print(f'\nERROR: {e}')
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print(f'\nAborting.')
+        sys.exit(2)
