@@ -1,0 +1,48 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{libertine}
+\usepackage{libertinust1math}
+\usepackage[T1]{fontenc}
+
+\usepackage[margin=2cm]{geometry}
+
+\setlength\parindent{0mm}
+
+\newcommand\beforeComments{
+    \begin{itemize}\setlength\itemsep{0mm}
+}
+
+\newcommand\afterComments{
+    \end{itemize}
+}
+
+\newcommand\comment[1]{
+\item #1
+}
+
+\newcommand\newtask[1]{
+\subsection*{Aufgabe #1}
+}
+
+\newcommand\scoreTask[5]{% <sheet> <task> <subtask> <score> <total>
+#2.#3\dotfill #4 von #5
+
+}
+
+\begin{document}
+\hrule
+\smallskip
+
+{\large Bewertung Übungsblatt §§sheetnr§§\hfill Gesamt: §§total§§ von §§maxtotal§§}\smallskip
+
+{\large §§fullname§§}\smallskip
+
+{Tutor: §§tutorname§§}
+
+\smallskip
+\hrule
+\vspace{0.2cm}
+
+§§body§§
+
+\end{document}
