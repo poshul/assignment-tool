@@ -138,10 +138,14 @@ def process(args):
 def main(argv=sys.argv):
     args = parser.parse_args()
     try:
-        sys.exit(main(args))
+        sys.exit(process(args))
     except RuntimeError as e:
         print(f'\nERROR: {e}')
         sys.exit(1)
     except KeyboardInterrupt:
         print(f'\nAborting.')
         sys.exit(2)
+    except Exception as e:
+        print(f'\nUnknown error: {e}')
+        sys.exit(9)
+
