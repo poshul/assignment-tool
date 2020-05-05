@@ -17,6 +17,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('infile', type = str, metavar = '<sheetpath>', help = 'Path to the Excel file')
 parser.add_argument('textemplate', type = str, metavar = '<texpath>', help = 'Path to the LaTeX template')
 parser.add_argument('tutname', type = str, metavar = '<tutorname>', help = 'Name of the correcting tutor')
+parser.add_argument('--pdflatex', type = str, metavar = '<pdflatexpath>', help = 'pdflatex command to use', default='pdflatex')
 parser.add_argument('sheet', type = int, help = 'Sheet number to process')
 
 ####################################################################################################
@@ -29,12 +30,12 @@ def openLaTeX():
 
 ####################################################################################################
 
-def compileLaTeX(tdir):
+def compileLaTeX(tdir, pdflatex):
     """ Compile the 'hmm.tex' file in the given directory """
-    ret = subprocess.run(['pdflatex', '--interaction', 'batchmode', 'out'], cwd = tdir, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    ret = subprocess.run([pdflatex, '--interaction', 'batchmode', 'out'], cwd = tdir, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     if ret.returncode != 0:
         raise RuntimeError('An error occurred during LaTeX execution')
-    ret = subprocess.run(['pdflatex', '--interaction', 'batchmode', 'out'], cwd = tdir, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    ret = subprocess.run([pdflatex, '--interaction', 'batchmode', 'out'], cwd = tdir, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     if ret.returncode != 0:
         raise RuntimeError('An error occurred during LaTeX execution')
 
@@ -122,7 +123,7 @@ def process(args):
         tdir, out = openLaTeX()
         out.write(tex)
         out.close()
-        compileLaTeX(tdir)
+        compileLaTeX(tdir, args.pdflatex)
 
         # Move output file in place
         outpath = f'sheet{args.sheet}.{user}.pdf'
