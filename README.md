@@ -2,6 +2,10 @@
 `assignment-tool` is a python tool to produce feedback PDF files for grading
 student assignments.
 
+<p align="center">
+<img src="img/header.png?raw=true" alt="Header Image"/>
+</p>
+
 ## Installation
 
 You can install `assignment-tool` by running
