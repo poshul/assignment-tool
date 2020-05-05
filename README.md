@@ -40,6 +40,14 @@ The user interface of `assignment-tool` looks as follows:
    provided. Otherwise, the `pdflatex` binary provided by the `PATH` environment will
    be invoked.
 
+## Example
+
+Assuming you have cloned the repository, you have installed `assignment-tool` and your current working directory is the [examples](/examples) folder, you can invoke
+
+    assignment-tool ExampleSheet.xlsx template.tex 'Max Mustermann' 1
+
+to generate three PDF files, one for each example participant listed in the Excel Sheet.
+
 ## Excel File Specification
 
 The Excel file read by the two has to contain at least the following three sheets:
