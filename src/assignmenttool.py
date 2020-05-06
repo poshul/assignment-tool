@@ -68,7 +68,7 @@ def process(args):
     # Read maximum scores
     sheet_meta       = pd.read_excel(args.infile, sheet_name = 'Sheets')
     max_scores       = { (row.Sheet, row.Task, row.Subtask) : row.MaxScore for _, row in sheet_meta.iterrows() }
-    max_scores_sheet = sheet_meta.groupby('Sheet')['MaxScore'].sum() 
+    max_scores_sheet = sheet_meta.groupby('Sheet')['MaxScore'].sum()
 
     # Select sheet
     scores = scores[scores.Sheet==args.sheet]
@@ -86,7 +86,7 @@ def process(args):
 
     for _,row in scores.iterrows():
         task = (row.Sheet, row.Task, row.Subtask)
-        record = d[row.Username][task] 
+        record = d[row.Username][task]
         if row.Type.upper() == 'SCORE':
             if record['score'] is not None:
                 raise RuntimeError(f'Duplicate score for identical task found (User: {row.Username}, Sheet: {row.Sheet}, Task: {row.Task}, Subtask: {row.Subtask}')
