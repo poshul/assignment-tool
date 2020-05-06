@@ -14,7 +14,11 @@ You can install `assignment-tool` by running
 
 ## Usage
 
-The user interface of `assignment-tool` looks as follows:
+The user interface of `assignment-tool` looks as follows. Note that
+`assignment-tool` can also read most of these settings from a runtime
+configuration file `~/.assignmentrc` which is superseeded by a file
+`assignment.rc` in your current working directory. A documented example for an
+RC file can be found [here](examples/assignmenttoolrc.dist).
 
 	usage: assignment-tool [-h] [--textemplate <texpath>]
 			       [--tutor-name <tutorname>] [--pdflatex <pdflatexpath>]
