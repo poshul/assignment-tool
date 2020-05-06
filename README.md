@@ -10,7 +10,7 @@ student assignments.
 
 You can install `assignment-tool` by running
 
-    pip install git+https://github.com/KohlbacherLab/assignment-tool.git
+    pip install git+https://github.com/KohlbacherLab/assignment-tool.git@1.1.0
 
 ## Usage
 
