@@ -76,7 +76,7 @@ def mail_feedback(config, participants, pdfs):
         smtp.sendMessage(
                 sender       = (config.mail_sender_name, config.mail_sender_address),
                 recipients   = (name, email),
-                subject      = config.mail_subject.replace('§§username§§', user).replace('§§name§§', name).replace('§§sheetnr§§', str(config.sheet)),
+                subject      = config.mail_subject.replace('§§username§§', user).replace('§§name§§', name).replace('§§sheetnr§§', str(config.sheet)).replace('§§tutorname§§', config.tutor_name),
                 message_text = config.mail_template_text.replace('§§username§§', user).replace('§§name§§', name).replace('§§sheetnr§§', str(config.sheet)),
                 attachments  = {
                     pdf['filename'] : pdf['data']
