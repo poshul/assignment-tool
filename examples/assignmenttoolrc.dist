@@ -1,0 +1,34 @@
+[General]
+# Path to the LaTeX template to use
+TexTemplate = /path/to/template.tex
+# Name of the tutor, can be used in the LaTeX and email templates
+TutorName = Alice Teacher
+# Where to find pdflatex
+PDFLaTeX = pdflatex
+# Which file name to use for the produced PDFs
+PDFFilename = Exercise§§sheetnr§§_§§user§§_feedback.pdf
+# Whether or not to skip local file creation if --mail is specified
+NoLocalFile = false
+
+[Mail]
+# SMTP Hostname
+SMTPHost = mail.provider.tld
+# SMTP Port
+SMTPPort = 587
+# SMTP User
+SMTPUser = ateacher
+# SMTP Pass [if not specified here, will be prompted]
+# SMTPPass = secret
+# Disable TLS
+NoTLS = false
+# BCC to use on every outgoing email
+BCC = alice.teacher@university.tld
+# The subject template to use when sending emails to participants
+Subject = Feedback for exercise sheet §§sheetnr§§
+# The mail body template [can contain §§sheetnr§§, §§tutorname§§, §§username§§ and §§name§§]
+Template = /path/to/mail_template.txt
+# Sender name to use when sending emails
+SenderName = Alice Teacher
+# Sender address to use when sending emails
+SenderAddress = alice.teacher@university.tld
+

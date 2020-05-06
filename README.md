@@ -16,20 +16,66 @@ You can install `assignment-tool` by running
 
 The user interface of `assignment-tool` looks as follows:
 
-	$ assignment-tool -h
-	usage: assignment-tool [-h] [--pdflatex <pdflatexpath>]
-			       <sheetpath> <texpath> <tutorname> sheet
+	usage: assignment-tool [-h] [--textemplate <texpath>]
+			       [--tutor-name <tutorname>] [--pdflatex <pdflatexpath>]
+			       [--pdf-filename <name>] [--no-local-file] [--mail]
+			       [--mail-smtp-host MAIL_SMTP_HOST]
+			       [--mail-smtp-port MAIL_SMTP_PORT]
+			       [--mail-smtp-user MAIL_SMTP_USER] [--mail-smtp-no-tls]
+			       [--mail-sender-name MAIL_SENDER_NAME]
+			       [--mail-sender-address MAIL_SENDER_ADDRESS]
+			       [--mail-bcc MAIL_BCC [MAIL_BCC ...]]
+			       [--mail-subject MAIL_SUBJECT]
+			       [--mail-template MAIL_TEMPLATE]
+			       <sheetpath> sheet
 
 	positional arguments:
-	  <sheetpath>           Path to the Excel file
-	  <texpath>             Path to the LaTeX template
-	  <tutorname>           Name of the correcting tutor
+	  <sheetpath>           Path to the Excel file.
 	  sheet                 Sheet number to process
 
 	optional arguments:
 	  -h, --help            show this help message and exit
+
+	general settings:
+	  --textemplate <texpath>
+				Path to the LaTeX template.
+	  --tutor-name <tutorname>
+				Name of the correcting tutor. Will be blank if not
+				specified but used in the template.
 	  --pdflatex <pdflatexpath>
-				pdflatex command to use
+				pdflatex command to use (default: pdflatex).
+	  --pdf-filename <name>
+				Output filename of the PDF feedback. May contain
+				variables §§username§§, §§name§§ and §§sheetnr§§.
+	  --no-local-file       If --mail is specified, do not store PDFs locally.
+
+	mail releated settings:
+	  --mail                Send out the feedback PDFs to the participants via
+				email.
+	  --mail-smtp-host MAIL_SMTP_HOST
+				Hostname of the SMTP server to use for mail
+				submission.
+	  --mail-smtp-port MAIL_SMTP_PORT
+				Hostname of the SMTP server to use for mail
+				submission. Default: 587.
+	  --mail-smtp-user MAIL_SMTP_USER
+				Username to use to authenticate at the SMTP server.
+	  --mail-smtp-no-tls    Use SMTP without TLS.
+	  --mail-sender-name MAIL_SENDER_NAME
+				Sender name to use when sending out mails.
+	  --mail-sender-address MAIL_SENDER_ADDRESS
+				Sender address to use when sending out mails.
+	  --mail-bcc MAIL_BCC [MAIL_BCC ...]
+				BCC recipient to add to every sent out email.
+	  --mail-subject MAIL_SUBJECT
+				Subject for outgoing emails to participants. May
+				contain variables §§username§§, §§name§§ and
+				§§sheetnr§§.
+	  --mail-template MAIL_TEMPLATE
+				Path to the email body template for outgoing emails to
+				participants. The template itself may contain
+				variables §§username§§, §§name§§, §§sheetnr§§ and
+				§§tutorname§§.
 
  * The Excel file must contain at least three spreadsheets following the
    specifications described below. It contains information about the course
@@ -48,7 +94,7 @@ The user interface of `assignment-tool` looks as follows:
 
 Assuming you have cloned the repository, you have installed `assignment-tool` and your current working directory is the [examples](/examples) folder, you can invoke
 
-    assignment-tool ExampleSheet.xlsx template.tex 'Max Mustermann' 1
+    assignment-tool --tutor-name 'Alice Teacher' --tex-template template.tex ExampleSheet.xlsx 1
 
 to generate three PDF files, one for each example participant listed in the Excel Sheet.
 
@@ -58,7 +104,7 @@ The Excel file read by the two has to contain at least the following three sheet
 
  * *Participants*
 
-   Used columns: `Name`, `Username`
+   Used columns: `Name`, `Username`, `E-Mail` (if the mail feature is used)
 
  * *Sheets*
 

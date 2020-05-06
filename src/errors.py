@@ -18,27 +18,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from setuptools import setup, find_packages
-
-requires = [
-        'pandas',
-        'xlrd',
-        ]
-
-setup(
-        name = 'assignmenttool',
-        version = '1.1.0',
-        package_dir={'':'src'},
-        packages=find_packages('./src'),
-        author = 'Leon Kuchenbecker',
-        author_email = 'leon.kuchenbecker@uni-tuebingen.de',
-        description = 'Assignment Tool',
-        install_requires = requires,
-        zip_safe = False,
-        include_package_data=True,
-        entry_points={
-            'console_scripts' : [
-                'assignment-tool          = assignmenttool:main',
-                ],
-            },
-        )
+class AToolError(RuntimeError):
+    pass
