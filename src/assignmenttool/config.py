@@ -23,7 +23,7 @@ import configparser
 import subprocess
 import os
 
-from errors import AToolError
+from assignmenttool.errors import AToolError
 
 def config_from_cli():
     """Handle configuration passed through the command line"""

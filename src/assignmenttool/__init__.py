@@ -28,10 +28,9 @@ import shutil
 import getpass
 
 from collections import defaultdict
-from errors import AToolError
+from assignmenttool.errors import AToolError
 
-import config
-import SMTPClient
+from assignmenttool import config, SMTPClient
 
 ####################################################################################################
 
