@@ -10,7 +10,7 @@ student assignments.
 
 You can install `assignment-tool` by running
 
-    pip install git+https://github.com/KohlbacherLab/assignment-tool.git@1.1.1
+    pip install git+https://github.com/KohlbacherLab/assignment-tool.git@1.2.0
 
 ## Usage
 
@@ -150,6 +150,10 @@ The order of the rows does not matter, tasks and subtasks will always be shown
 on the feedback PDF file in numerical order. If multiple comments are added for
 the same subtask, the order in which they are specified in the Excel sheet is
 maintained on the feedback PDF file.
+
+Optionally, *global* comments can be specified by leaving the *Task* and
+*Subtask* fields empty. Such comments can then be rendered separately from the
+per-task comments.
 
 ### The *Summary* Sheet
 

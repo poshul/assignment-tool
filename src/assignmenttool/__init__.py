@@ -86,9 +86,23 @@ def mail_feedback(config, participants, pdfs):
 
 ####################################################################################################
 
+def read_scores(infile):
+    """Reads the scores from the Excel sheet while being as relaxed about the
+    data type of the task / subtask columns as possible"""
+    scores = pd.read_excel(infile, sheet_name = 'Grading', dtype={
+        'Username' : str,
+        'Sheet'    : 'Int64',
+        'Task'     : 'Int64',
+        'Subtask'  : 'Int64',
+        'Type'     : str,
+        'Value'    : object,
+        })
+
+    return scores
+
 def process(config):
     # Read Scores and comments
-    scores = pd.read_excel(config.infile, sheet_name = 'Grading')
+    scores = read_scores(config.infile)
 
     # Read participants
     participants = pd.read_excel(config.infile, sheet_name = 'Participants').set_index('Username')
@@ -114,20 +128,38 @@ def process(config):
 
     # Build dictionaries
     d = defaultdict(lambda : defaultdict( lambda : { 'score' : None, 'comments' : []} ) )
+    sheet_comments = defaultdict(lambda : [])
+
 
     for _,row in scores.iterrows():
-        task = (row.Sheet, row.Task, row.Subtask)
-        record = d[row.Username][task]
+        if pd.isna(row.Sheet):
+            raise AToolError('Failed to parse provided Excel file, "Grading" sheet contains empty value for "Sheet" column.')
         if row.Type.upper() == 'SCORE':
+            # Check if the row checks out
+            if pd.isna(row.Task) or pd.isna(row.Subtask) or pd.isna(row.Value):
+                raise AToolError(f'Failed to parse provided Excel file, "Grading" sheet contains empty value for "Task", "Subtask" or "Value" column for sheet {row.Sheet}.')
+            task = (row.Sheet, row.Task, row.Subtask)
+            record = d[row.Username][task]
+            # Check if a score occurs redundantly for the same task
             if record['score'] is not None:
                 raise AToolError(f'Duplicate score for identical task found (User: {row.Username}, Sheet: {row.Sheet}, Task: {row.Task}, Subtask: {row.Subtask}')
+            # Obtain maximum attainable score
             try:
                 record['max_score'] = max_scores[task]
             except KeyError:
                 raise AToolError(f'Could not find maximum score for task {task}')
             record['score'] = row.Value
         elif row.Type.upper() == 'COMMENT':
-            record['comments'].append(row.Value)
+            # Check if this is a comment that applies to the entire sheet
+            if pd.isna(row.Task) and pd.isna(row.Subtask):
+                sheet_comments[row.Username].append(row.Value)
+            elif pd.isna(row.Task) or pd.isna(row.Subtask):
+                raise AToolError(f'Failed to parse provided Excel file, "Grading" sheet contains empty value for "Task" or "Subtask" but not for both.')
+            # ... or if it's a comment that applies to a specific task
+            else:
+                task = (row.Sheet, row.Task, row.Subtask)
+                record = d[row.Username][task]
+                record['comments'].append(row.Value)
         else:
             raise AToolError(f'Invalid value type "{row.Type}".')
 
@@ -166,8 +198,19 @@ def process(config):
                     body.append(f'\\comment{{{comment}}}')
                 body.append(r'\afterComments')
 
+        # Global comments
+        global_ = []
+        if user in sheet_comments:
+            global_.append('\\beforeGlobalComments')
+            global_comments = sheet_comments[user]
+            for comment in global_comments:
+                global_.append(f'\\globalComment{{{comment}}}')
+            global_.append('\\afterGlobalComments')
+
         # Write out and compile tex
+        tex = tex.replace('§§global§§', '\n'.join(global_))
         tex = tex.replace('§§body§§', '\n'.join(body))
+        tex = tex.replace('§§tasks§§', '\n'.join(body))
         pdf = compileLaTeX(tex, config.pdflatex)
 
         # Move output file in place
