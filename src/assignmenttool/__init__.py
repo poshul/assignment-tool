@@ -57,14 +57,14 @@ def mail_feedback(config, participants, pdfs):
     """Send the feedback PDFs to the participants"""
     if config.mail_smtp_user and not config.mail_smtp_pass:
         config.smtp_password = getpass.getpass(f'Password for [{config.mail_smtp_user}@{config.mail_smtp_host}]: ')
-    
+
     smtp = SMTPClient.SMTPClient(
             hostname = config.mail_smtp_host,
             port = config.mail_smtp_port,
             user = config.mail_smtp_user,
             password = config.smtp_password,
             tls = not config.mail_smtp_no_tls)
-    
+
     for user, pdf in pdfs.items():
         # Lookup recipient name and email address
         try:
