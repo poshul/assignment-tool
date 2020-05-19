@@ -8,24 +8,45 @@
 
 \setlength\parindent{0mm}
 
+% Command is executed before global comments and only if global comments are present
+\newcommand\beforeGlobalComments{
+    \subsection*{General Remarks}
+    \begin{itemize}\setlength\itemsep{0mm}
+}
+
+% Command is executed after global comments and only if global comments are present
+\newcommand\afterGlobalComments{
+    \end{itemize}
+}
+
+% Command is executed for every global comment. Arguments: Comment.
+\newcommand\globalComment[1]{
+\item #1
+}
+
+% Command is executed before per-task comments and only if per-task comments are present
 \newcommand\beforeComments{
     \begin{itemize}\setlength\itemsep{0mm}
 }
 
+% Command is executed after per-task comments and only if per-task comments are present
 \newcommand\afterComments{
     \end{itemize}
 }
 
+% Command is executed for every per-task comment. Arguments: Comment.
 \newcommand\comment[1]{
 \item #1
 }
 
+% Command is executed for every scored task, passing the task number as an argument
 \newcommand\newtask[1]{
 \subsection*{Exercise #1}
 }
 
+% Command is executed for every scored subtask. Arguments: sheet number, task number, subtask number, score for the subtask, maximum attainable score for the subtask
 \newcommand\scoreTask[5]{% <sheet> <task> <subtask> <score> <total>
-#2.#3\dotfill #4 von #5
+#2.#3\dotfill #4 of #5
 
 }
 
@@ -33,16 +54,18 @@
 \hrule
 \smallskip
 
-{\large Bewertung Übungsblatt §§sheetnr§§\hfill Gesamt: §§total§§ von §§maxtotal§§}\smallskip
+{\large Scores for Exercise Sheet §§sheetnr§§\hfill Total: §§total§§ of §§maxtotal§§}\smallskip
 
 {\large §§fullname§§}\smallskip
 
-{Tutor: §§tutorname§§}
+{Tutor: §§tutorname§§\hfill PHY9911: Practical String Theory}
 
 \smallskip
 \hrule
 \vspace{0.2cm}
 
-§§body§§
+§§global§§
+
+§§tasks§§
 
 \end{document}

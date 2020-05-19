@@ -21,13 +21,13 @@
 from setuptools import setup, find_packages
 
 requires = [
-        'pandas',
+        'pandas>=1.0.0',
         'xlrd',
         ]
 
 setup(
         name = 'assignmenttool',
-        version = '1.1.1',
+        version = '1.2.0',
         package_dir={'':'src'},
         packages=find_packages('./src'),
         author = 'Leon Kuchenbecker',
