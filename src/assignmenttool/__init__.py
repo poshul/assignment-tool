@@ -34,7 +34,7 @@ from assignmenttool import config, SMTPClient
 
 ####################################################################################################
 
-def compileLaTeX(tex, pdflatex):
+def compileLaTeX(tex, pdflatex, keepdir = False):
     """ Compile the 'hmm.tex' file in the given directory """
     tdir = tempfile.mkdtemp()
     out = open(tdir + '/out.tex', 'w')
@@ -48,8 +48,10 @@ def compileLaTeX(tex, pdflatex):
         raise AToolError('An error occurred during LaTeX execution')
     with open(os.path.join(tdir, 'out.pdf'), 'rb') as infile:
         pdf = infile.read()
+    if keepdir:
+        return tdir, pdf
     shutil.rmtree(tdir)
-    return pdf
+    return None, pdf
 
 ####################################################################################################
 
@@ -213,7 +215,7 @@ def process(config):
         tex = tex.replace('§§global§§', '\n'.join(global_))
         tex = tex.replace('§§body§§', '\n'.join(body))
         tex = tex.replace('§§tasks§§', '\n'.join(body))
-        pdf = compileLaTeX(tex, config.pdflatex)
+        tdir, pdf = compileLaTeX(tex, config.pdflatex, config.debug)
 
         # Move output file in place
         outpath = config.pdf_filename.replace('§§username§§', user).replace('§§name§§', realname).replace('§§sheetnr§§', str(config.sheet))
@@ -224,7 +226,10 @@ def process(config):
                 raise AToolError(f"Output path '{outpath}' exists! Aborting!")
             with open(outpath, 'wb') as outfile:
                 outfile.write(pdf)
-            print(f'[OK]\t{user}')
+            if config.debug:
+                print(f"[OK]\t{user} [temp dir '{tdir}']")
+            else:
+                print(f"[OK]\t{user}")
 
         # Prepare email if requested to do so
         if config.mail:

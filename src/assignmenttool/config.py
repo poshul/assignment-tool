@@ -51,6 +51,10 @@ def config_from_cli():
     mail.add_argument('--mail-bcc', type = str, nargs = '+', help = 'BCC recipient to add to every sent out email.')
     mail.add_argument('--mail-subject', type = str, help = 'Subject for outgoing emails to participants. May contain variables §§username§§, §§name§§ and §§sheetnr§§.')
     mail.add_argument('--mail-template', type = str, help = 'Path to the email body template for outgoing emails to participants. The template itself may contain variables §§username§§, §§name§§, §§sheetnr§§ and §§tutorname§§.')
+
+    dev = parser.add_argument_group('developer settings')
+    dev.add_argument('--debug', action = 'store_true', help = 'Do not remove temporary LaTeX build folder. Print path instead.')
+
     parser.add_argument_group(mail)
     config = parser.parse_args()
 
@@ -88,9 +92,10 @@ def read_rc(config):
     # Boolean arguments
     for cli_arg, conf_group, conf_key in [
             ('no_local_file', 'General', 'NoLocalFile'),
+            ('debug', 'General', 'Debug'),
             ('mail_smtp_no_tls', 'Mail', 'NoTLS'),
             ]:
-        if vars(config)[cli_arg] is None:
+        if vars(config)[cli_arg] is False:
             try:
                 vars(config)[cli_arg] = True if configfile[conf_group][conf_key] in ['yes', 'y', 'Yes', 'YES', 'True', 'TRUE', 'true', '1'] else False
             except KeyError:
