@@ -5,8 +5,8 @@ TexTemplate = /path/to/template.tex
 TutorName = Alice Teacher
 # Where to find pdflatex
 PDFLaTeX = pdflatex
-# Which file name to use for the produced PDFs
-PDFFilename = Exercise§§sheetnr§§_§§user§§_feedback.pdf
+# Which file name to use for the produced PDFs [can contain §§username§§, §§name§§ and §§sheetnr§§ ]
+PDFFilename = Exercise§§sheetnr§§_§§username§§_feedback.pdf
 # Whether or not to skip local file creation if --mail is specified
 NoLocalFile = false
 
