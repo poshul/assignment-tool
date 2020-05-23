@@ -150,6 +150,8 @@ def process(config):
                 raise AToolError(f'Could not find maximum score for task {task}')
             record['score'] = row.Value
         elif row.Type.upper() == 'COMMENT':
+            if pd.isna(row.Value):
+                continue # Ignore empty comments
             # Check if this is a comment that applies to the entire sheet
             if pd.isna(row.Task) and pd.isna(row.Subtask):
                 sheet_comments[row.Username].append(row.Value)
