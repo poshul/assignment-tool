@@ -42,10 +42,10 @@ def compileLaTeX(tex, pdflatex, keepdir = False):
     out.close()
     ret = subprocess.run([pdflatex, '--interaction', 'batchmode', 'out'], cwd = tdir, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     if ret.returncode != 0:
-        raise AToolError('An error occurred during LaTeX execution')
+        raise AToolError(f"An error occurred during LaTeX execution in '{tdir}'")
     ret = subprocess.run([pdflatex, '--interaction', 'batchmode', 'out'], cwd = tdir, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     if ret.returncode != 0:
-        raise AToolError('An error occurred during LaTeX execution')
+        raise AToolError(f"An error occurred during LaTeX execution in '{tdir}'")
     with open(os.path.join(tdir, 'out.pdf'), 'rb') as infile:
         pdf = infile.read()
     if keepdir:
