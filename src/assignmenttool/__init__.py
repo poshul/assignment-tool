@@ -74,7 +74,8 @@ def mail_feedback(config, participants, pdfs):
             email = participants.loc[user]['E-Mail']
         except KeyError:
             raise AToolError(f'Failed to look up name and email address for user "{user}".')
-        smtp.sendMessage(
+        try:
+            smtp.sendMessage(
                 sender       = (config.mail_sender_name, config.mail_sender_address),
                 recipients   = (name, email),
                 subject      = config.mail_subject.replace('§§username§§', user).replace('§§name§§', name).replace('§§sheetnr§§', str(config.sheet)).replace('§§tutorname§§', config.tutor_name),
@@ -84,7 +85,10 @@ def mail_feedback(config, participants, pdfs):
                     },
                 bcc = config.mail_bcc
                 )
-        print(f'[OK]\t{user} -> {name} <{email}>')
+            print(f'[OK]\t{user} -> {name} <{email}>')
+        except Exception as e:
+            print("caught an exception from the SMTP server. Trying to continue rather than abort part way through sending.
+            print(e)
 
 ####################################################################################################
 
